@@ -133,4 +133,5 @@ export interface Sample {
   pixelSize: number;
   beadCount: number;
   tags: string[];
+  image?: string;
 }

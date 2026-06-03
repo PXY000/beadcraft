@@ -2,27 +2,30 @@ import type { Sample } from "@/lib/types";
 
 export const samples: Sample[] = [
   {
-    id: "heart",
-    title: "像素爱心",
-    description: "经典 16×16 红白爱心，情侣款必备，入门首选。",
-    pixelSize: 16,
-    beadCount: 98,
-    tags: ["heart", "love"],
-  },
-  {
-    id: "mushroom",
-    title: "超级蘑菇",
-    description: "复古游戏风红白蘑菇，32×32 经典造型，童年回忆。",
-    pixelSize: 32,
-    beadCount: 386,
-    tags: ["mushroom", "game"],
-  },
-  {
     id: "cat",
     title: "猫咪头像",
-    description: "可爱猫咪脸部，48×48 精细像素，装饰房间首选。",
+    description: "可爱橘猫脸部特写，暖色调拼豆还原毛色层次，适合入门级小尺寸作品。",
     pixelSize: 48,
     beadCount: 912,
     tags: ["cat", "animal"],
+    image: "/samples/猫咪.png",
+  },
+  {
+    id: "anime",
+    title: "动漫角色",
+    description: "经典动漫人物像素化，高对比度色彩边界清晰，中等难度适合进阶玩家。",
+    pixelSize: 48,
+    beadCount: 1104,
+    tags: ["anime", "character"],
+    image: "/samples/动漫.png",
+  },
+  {
+    id: "sports-car",
+    title: "跑车侧面",
+    description: "流线型跑车轮廓，金属质感配色，大尺寸高清图纸适合大幅拼豆作品。",
+    pixelSize: 64,
+    beadCount: 1856,
+    tags: ["car", "vehicle"],
+    image: "/samples/跑车.png",
   },
 ];
