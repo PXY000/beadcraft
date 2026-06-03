@@ -27,24 +27,26 @@ export function renderBeadGrid(params: RenderGridParams): void {
   ctx.fillStyle = "#FFFFFF";
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  // Margins for number labels
-  const rowLabelW = 36;
-  const colLabelH = 24;
+  // Margins for coordinate labels on all 4 sides
+  const topMargin = 26;
+  const bottomMargin = 26;
+  const leftMargin = 36;
+  const rightMargin = 36;
 
   // Calculate cell size based on available space and zoom
-  const availW = canvasWidth - rowLabelW;
-  const availH = canvasHeight - colLabelH;
+  const availW = canvasWidth - leftMargin - rightMargin;
+  const availH = canvasHeight - topMargin - bottomMargin;
   const baseCell = Math.floor(Math.min(availW, availH) / pixelSize);
   const cellSize = Math.max(1, Math.floor(baseCell * scale));
 
   const gridW = cellSize * pixelSize;
   const gridH = cellSize * pixelSize;
 
-  // Center the zoomed grid
-  const gridX = rowLabelW + Math.floor((availW - gridW) / 2);
-  const gridY = colLabelH + Math.floor((availH - gridH) / 2);
+  // Center the zoomed grid within the available area
+  const gridX = leftMargin + Math.floor((availW - gridW) / 2);
+  const gridY = topMargin + Math.floor((availH - gridH) / 2);
 
-  // ─── Column labels ───
+  // ─── Top column labels ───
   if (cellSize >= 10) {
     ctx.fillStyle = "#333333";
     ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
@@ -52,15 +54,45 @@ export function renderBeadGrid(params: RenderGridParams): void {
     ctx.textBaseline = "middle";
     for (let col = 0; col < pixelSize; col++) {
       const cx = gridX + col * cellSize + cellSize / 2;
-      const cy = colLabelH / 2;
+      const cy = topMargin / 2;
       ctx.fillText(columnLabel(col), cx, cy);
     }
   }
 
-  // ─── Row labels ───
+  // ─── Bottom column labels ───
   if (cellSize >= 10) {
+    ctx.fillStyle = "#333333";
+    ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (let col = 0; col < pixelSize; col++) {
+      const cx = gridX + col * cellSize + cellSize / 2;
+      const cy = canvasHeight - bottomMargin / 2;
+      ctx.fillText(columnLabel(col), cx, cy);
+    }
+  }
+
+  // ─── Left row labels ───
+  if (cellSize >= 10) {
+    ctx.fillStyle = "#333333";
+    ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     for (let row = 0; row < pixelSize; row++) {
-      const cx = rowLabelW / 2;
+      const cx = leftMargin / 2;
+      const cy = gridY + row * cellSize + cellSize / 2;
+      ctx.fillText(`${row + 1}`, cx, cy);
+    }
+  }
+
+  // ─── Right row labels ───
+  if (cellSize >= 10) {
+    ctx.fillStyle = "#333333";
+    ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (let row = 0; row < pixelSize; row++) {
+      const cx = canvasWidth - rightMargin / 2;
       const cy = gridY + row * cellSize + cellSize / 2;
       ctx.fillText(`${row + 1}`, cx, cy);
     }

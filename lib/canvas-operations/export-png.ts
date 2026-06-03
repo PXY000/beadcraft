@@ -10,6 +10,7 @@ const DEFAULT_OPTIONS: ExportOptions = {
   includeStats: true,
 };
 
+/** Standard landscape/detailed export — best for printing and desktop viewing */
 export async function exportBlueprintPNG(
   grid: BlueprintGrid,
   statistics: BlueprintStatistics,
@@ -19,11 +20,11 @@ export async function exportBlueprintPNG(
   const opts = { ...DEFAULT_OPTIONS, ...options };
   const { pixelSize } = grid;
 
-  const rowLabelW = 40;
-  const colLabelH = 28;
+  // Margins for 4-direction coordinate labels
+  const labelMargin = 40;
   const gridPixels = pixelSize * opts.beadPixelSize;
-  const canvasWidth = gridPixels + rowLabelW + 20;
-  const gridCanvasHeight = gridPixels + colLabelH;
+  const canvasWidth = gridPixels + labelMargin * 2;
+  const gridCanvasHeight = gridPixels + labelMargin * 2;
 
   const legendHeight = opts.includeLegend ? 240 : 0;
   const statsHeight = opts.includeStats ? 140 : 0;
@@ -76,6 +77,104 @@ export async function exportBlueprintPNG(
   const link = document.createElement("a");
   link.href = url;
   link.download = `beadcraft-${brandId}-${grid.pixelSize}x${grid.pixelSize}.png`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/** Mobile-friendly portrait export — optimized for phone saving and viewing */
+export async function exportBlueprintPNGMobile(
+  grid: BlueprintGrid,
+  statistics: BlueprintStatistics,
+  options: Partial<ExportOptions> = {},
+  brandId: BrandId = "mard"
+): Promise<void> {
+  const opts = { ...DEFAULT_OPTIONS, ...options };
+  const { pixelSize } = grid;
+
+  // Mobile-optimized: narrower width, larger beads for readability
+  const mobileWidth = 800;
+  const labelMargin = 40;
+  const gridPixels = pixelSize * opts.beadPixelSize;
+  const gridCanvasHeight = gridPixels + labelMargin * 2;
+
+  // Compact legend + stats for mobile
+  const legendRows = Math.ceil(statistics.beadCounts.filter((s) => s.count > 0).length / 3);
+  const legendHeight = opts.includeLegend ? 56 + legendRows * 30 + 16 : 0;
+  const statsHeight = opts.includeStats ? 100 : 0;
+  const gap = 20;
+  const headerHeight = 52;
+  const footerHeight = 40;
+  const totalHeight = headerHeight + gridCanvasHeight + (legendHeight ? gap + legendHeight : 0) + (statsHeight ? gap + statsHeight : 0) + footerHeight;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = mobileWidth;
+  canvas.height = totalHeight;
+  const ctx = canvas.getContext("2d")!;
+
+  // White background
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // ─── Header ───
+  ctx.fillStyle = "#1A1A1A";
+  ctx.font = "bold 16px system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(`BeadCraft · ${pixelSize}×${pixelSize} · ${brandId.toUpperCase()}`, canvas.width / 2, headerHeight / 2);
+
+  ctx.strokeStyle = "#E5E5E5";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(20, headerHeight);
+  ctx.lineTo(canvas.width - 20, headerHeight);
+  ctx.stroke();
+
+  // ─── Grid ───
+  renderBeadGrid({
+    ctx,
+    grid,
+    options: {
+      showGridLines: opts.showGrid,
+      gridLineColor: "#B0B0B0",
+      gridLineWidth: 1.5,
+      showNumbers: opts.showNumbers,
+      numberColor: "#1A1A1A",
+      numberFontSize: Math.round(opts.beadPixelSize * 0.38),
+    },
+    canvasWidth: mobileWidth,
+    canvasHeight: gridCanvasHeight,
+    brandId,
+  });
+
+  let yOffset = headerHeight + gridCanvasHeight + gap;
+
+  // ─── Compact legend ───
+  if (opts.includeLegend) {
+    renderLegendCompact(ctx, statistics, yOffset, mobileWidth, brandId);
+    yOffset += legendHeight + gap;
+  }
+
+  // ─── Stats ───
+  if (opts.includeStats) {
+    renderStatsSummary(ctx, statistics, yOffset, mobileWidth, statsHeight);
+  }
+
+  // ─── Footer ───
+  ctx.fillStyle = "#9B9B9B";
+  ctx.font = "11px system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("beadcraft.online", canvas.width / 2, canvas.height - footerHeight / 2);
+
+  const blob = await new Promise<Blob>((resolve) =>
+    canvas.toBlob((b) => resolve(b!), "image/png", 1.0)
+  );
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `beadcraft-mobile-${brandId}-${grid.pixelSize}x${grid.pixelSize}.png`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -138,6 +237,58 @@ function renderLegend(
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillText(`${entry.bead.nameZh}  ×${entry.count}`, sx + 62, sy + 9);
+  });
+}
+
+/** Compact legend for mobile export — 3 columns, smaller elements */
+function renderLegendCompact(
+  ctx: CanvasRenderingContext2D,
+  stats: BlueprintStatistics,
+  y: number,
+  width: number,
+  brandId: BrandId
+): void {
+  ctx.fillStyle = "#1A1A1A";
+  ctx.font = "bold 14px system-ui, sans-serif";
+  ctx.textAlign = "left";
+  ctx.fillText(`配色对照表 (${brandId.toUpperCase()})`, 20, y + 20);
+
+  ctx.strokeStyle = "#E0E0E0";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(20, y + 30);
+  ctx.lineTo(width - 20, y + 30);
+  ctx.stroke();
+
+  const swatchSize = 14;
+  const colW = (width - 40) / 3;
+  const usedColors = stats.beadCounts.filter((s) => s.count > 0);
+
+  usedColors.forEach((entry, i) => {
+    const col = i % 3;
+    const row = Math.floor(i / 3);
+    const sx = 20 + col * colW;
+    const sy = y + 42 + row * 24;
+    const code = entry.bead.codes[brandId];
+
+    // Swatch
+    ctx.fillStyle = entry.bead.hex;
+    ctx.fillRect(sx, sy, swatchSize, swatchSize);
+    ctx.strokeStyle = "#CCCCCC";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(sx, sy, swatchSize, swatchSize);
+
+    // Code
+    ctx.fillStyle = "#5E6AD2";
+    ctx.font = "bold 9px monospace";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText(code, sx + swatchSize + 4, sy + swatchSize / 2);
+
+    // Label
+    ctx.fillStyle = "#555555";
+    ctx.font = "10px system-ui, sans-serif";
+    ctx.fillText(` ${entry.bead.nameZh} ×${entry.count}`, sx + swatchSize + 32, sy + swatchSize / 2);
   });
 }
 
