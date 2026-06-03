@@ -44,7 +44,7 @@ export function Footer() {
 
           <div className="mt-8 pt-5 border-t border-black/5">
             <p className="text-xs text-[#9B9B9B]">
-              &copy; {new Date().getFullYear()} BeadCraft &mdash; 为拼豆爱好者打造的AI图纸生成工具
+              &copy; {new Date().getFullYear()} BeadCraft &mdash; 免费开源的拼豆图纸生成工具 · MIT License
             </p>
           </div>
         </div>

@@ -7,9 +7,9 @@ import { motion } from "framer-motion";
 const features = [
   {
     icon: Grid3X3,
-    title: "AI 智能像素化",
+    title: "智能像素化",
     description:
-      "自动将任意图片转换为清晰像素画，支持11种预设尺寸加自定义，最近邻插值保持锐利边缘。",
+      "将任意图片转换为清晰像素画，支持11种预设尺寸加自定义，最近邻插值保持锐利边缘。",
   },
   {
     icon: Palette,

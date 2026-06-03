@@ -66,7 +66,7 @@ export function ShowcaseSection() {
             看看能做出什么
           </h2>
           <p className="mt-2 text-sm text-[#6B6B6B]">
-            上传任意照片或设计稿，AI 自动生成对应风格的拼豆图纸
+            上传任意照片或设计稿，自动生成对应风格的拼豆图纸
           </p>
         </div>
 

@@ -53,7 +53,7 @@ export function GeneratorSection() {
             在线生成图纸
           </h2>
           <p className="mt-2 text-sm text-[#6B6B6B]">
-            上传图片，选择厂家色号，自定义网格参数
+            上传图片，选择厂家色号，自定义网格参数，实时预览拼豆效果
           </p>
         </div>
 

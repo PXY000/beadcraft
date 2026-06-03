@@ -39,6 +39,9 @@ export function AboutSection() {
             <p className="text-[15px] text-[#555555] leading-relaxed mb-4">
               于是干脆自己写了一个 —— 上传照片，自动匹配真实厂家的拼豆色号，生成带坐标和编号的正规图纸。希望能让她的拼豆创作更轻松一点，也希望能帮到同样喜欢拼豆的你。
             </p>
+            <p className="text-[15px] text-[#555555] leading-relaxed mb-4">
+              BeadCraft 完全免费、代码开源（MIT），不收集任何数据，所有图片处理都在你的浏览器本地完成。欢迎 Star、提 PR、或者直接拿去部署自己的版本。
+            </p>
 
             <div className="mt-8 pt-6 border-t border-black/5 space-y-3">
               <div className="flex items-center gap-2.5">

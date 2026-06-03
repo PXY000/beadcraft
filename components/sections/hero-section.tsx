@@ -34,7 +34,7 @@ export function HeroSection() {
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#5E6AD2]/8 text-[#5E6AD2] text-xs font-medium mb-6 ring-1 ring-[#5E6AD2]/10"
           >
             <Sparkles className="size-3" />
-            AI 驱动的拼豆图纸生成器
+            免费开源 · 无需注册
           </motion.div>
 
           <motion.h1
@@ -58,8 +58,8 @@ export function HeroSection() {
             variants={fadeUp}
             className="mt-5 text-base sm:text-lg text-[#6B6B6B] max-w-lg mx-auto leading-relaxed"
           >
-            上传照片，选择网格尺寸，自动匹配真实拼豆颜色，生成带颜色统计的图纸，
-            一键导出高清 PNG —— 全部在浏览器内完成。
+            上传照片，自动匹配真实拼豆颜色，生成带坐标编号的正规图纸。
+            全部在浏览器本地完成，无需上传服务器，完全免费。
           </motion.p>
 
           {/* CTA */}

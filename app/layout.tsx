@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "BeadCraft — AI 拼豆图纸生成器 | 图片转拼豆像素画",
+  title: "BeadCraft — 免费拼豆图纸生成器 | 图片转拼豆像素画",
   description:
-    "上传任意图片，AI 自动转换成拼豆图纸。智能配色匹配、像素化处理、网格生成、颜色统计、高清导出。免费使用，无需注册。",
+    "上传任意图片，自动转换成拼豆图纸。智能配色匹配、像素化处理、网格生成、颜色统计、高清导出。免费开源，无需注册。",
   keywords: [
     "拼豆",
     "拼豆图纸",
@@ -20,17 +20,18 @@ export const metadata: Metadata = {
     "像素画",
     "perler bead",
     "拼豆图案",
-    "AI拼豆",
+    "免费拼豆",
+    "开源拼豆",
     "图片转拼豆",
   ],
   openGraph: {
-    title: "BeadCraft — AI 拼豆图纸生成器",
+    title: "BeadCraft — 免费拼豆图纸生成器",
     description: "上传任意图片，AI 自动转换成拼豆图纸，支持46色精准匹配。",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "BeadCraft — AI 拼豆图纸生成器",
+    title: "BeadCraft — 免费拼豆图纸生成器",
     description: "上传任意图片，AI 自动转换成拼豆图纸，支持46色精准匹配。",
   },
   robots: {
