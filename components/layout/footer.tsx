@@ -1,61 +1,83 @@
+"use client";
+
+import { useState } from "react";
 import { Container } from "./container";
 import { BeadIcon } from "./bead-icon";
-
-const footerLinks = {
-  产品: ["功能介绍", "在线生成", "示例展示", "导出图纸"],
-  资源: ["拼豆入门指南", "配色对照表", "常见问题", "博客"],
-  关于: ["关于我们", "微博", "GitHub", "联系我们"],
-};
+import { Mail, X } from "lucide-react";
 
 export function Footer() {
+  const [showEmail, setShowEmail] = useState(false);
+
   return (
     <footer className="border-t border-black/5 bg-[#F8F8FA]">
       <Container>
-        <div className="py-12 lg:py-16">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div className="py-10 sm:py-12">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             {/* Brand */}
-            <div className="col-span-2 md:col-span-1">
-              <div className="flex items-center gap-2.5 mb-3">
-                <BeadIcon className="size-6" />
-                <span className="font-semibold text-[15px] tracking-tight text-[#1A1A1A]">
-                  BeadCraft
-                </span>
-              </div>
-              <p className="text-sm text-[#6B6B6B] leading-relaxed max-w-[200px]">
-                将任意图片转化为拼豆图纸，AI 智能配色，一键导出高清网格。
-              </p>
+            <div className="flex items-center gap-2.5">
+              <BeadIcon className="size-6" />
+              <span className="font-semibold text-[15px] tracking-tight text-[#1A1A1A]">
+                BeadCraft
+              </span>
             </div>
 
             {/* Links */}
-            {Object.entries(footerLinks).map(([title, links]) => (
-              <div key={title}>
-                <h4 className="text-sm font-medium text-[#1A1A1A] mb-3">{title}</h4>
-                <ul className="space-y-2">
-                  {links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
-                        className="text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            <div className="flex items-center gap-5">
+              <a
+                href="https://github.com/PXY000/beadcraft"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
+              >
+                <svg className="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+              </a>
+              <button
+                onClick={() => setShowEmail(true)}
+                className="flex items-center gap-1.5 text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
+              >
+                <Mail className="size-4" />
+                联系我
+              </button>
+            </div>
           </div>
 
-          <div className="mt-12 pt-6 border-t border-black/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="mt-8 pt-5 border-t border-black/5">
             <p className="text-xs text-[#9B9B9B]">
-              &copy; {new Date().getFullYear()} BeadCraft. 保留所有权利。
-            </p>
-            <p className="text-xs text-[#9B9B9B]">
-              基于 Next.js 构建 &middot; Canvas API &middot; 46 色拼豆色库
+              &copy; {new Date().getFullYear()} BeadCraft &mdash; 为拼豆爱好者打造的AI图纸生成工具
             </p>
           </div>
         </div>
       </Container>
+
+      {/* Email popup */}
+      {showEmail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-lg ring-1 ring-black/5 p-6 mx-4 max-w-sm w-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-[#1A1A1A]">联系方式</h3>
+              <button
+                onClick={() => setShowEmail(false)}
+                className="size-7 rounded-lg flex items-center justify-center text-[#9B9B9B] hover:bg-[#F0F0F4] hover:text-[#1A1A1A] transition-colors"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#F8F8FA]">
+              <Mail className="size-5 text-[#5E6AD2]" />
+              <a
+                href="mailto:2939177020@qq.com"
+                className="text-sm font-medium text-[#5E6AD2] hover:underline"
+              >
+                2939177020@qq.com
+              </a>
+            </div>
+            <p className="text-xs text-[#9B9B9B] mt-3">
+              品牌色号指正、功能建议、问题反馈，欢迎来信。
+            </p>
+          </div>
+        </div>
+      )}
     </footer>
   );
 }
