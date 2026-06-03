@@ -60,14 +60,13 @@ data/samples.ts       # 示例展示数据
 6. **渲染** — 在 Canvas 上绘制可配置的拼豆网格
 7. **导出** — 高 DPI 离屏渲染，触发 PNG 下载
 
-## 📦 构建与部署
+## 📦 官网
 
-```bash
-npm run build    # 生产环境构建
-npm start        # 启动生产服务器
-```
+[https://beadcraft.online](https://beadcraft.online)
 
-可直接部署到 Vercel、Netlify 或任意静态托管平台。
+## 🔗 开源
+
+GitHub: [github.com/PXY000/beadcraft](https://github.com/PXY000/beadcraft)
 
 ## 🎨 拼豆颜色库
 
