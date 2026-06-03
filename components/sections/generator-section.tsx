@@ -70,34 +70,47 @@ export function GeneratorSection() {
               />
 
               {state.phase !== "idle" && (
-                <div className="space-y-5 p-5 rounded-2xl bg-[#F8F8FA] ring-1 ring-black/5">
-                  <BrandSelector
-                    value={state.brandId}
-                    onChange={(brand: BrandId) =>
-                      dispatch({ type: "SET_BRAND", payload: brand })
-                    }
-                    disabled={state.phase === "processing"}
-                  />
-                  <PixelSizeSelector
-                    value={state.pixelSize}
-                    onChange={(size) =>
-                      dispatch({ type: "SET_PIXEL_SIZE", payload: size })
-                    }
-                    disabled={state.phase === "processing"}
-                  />
-                  <SmartOptimizeToggle
-                    enabled={state.smartOptimize}
-                    onToggle={() => dispatch({ type: "TOGGLE_SMART_OPTIMIZE" })}
-                    disabled={state.phase === "processing"}
-                  />
-                  <BlueprintControls
-                    options={state.gridOptions}
-                    onChange={(opts) =>
-                      dispatch({ type: "SET_GRID_OPTIONS", payload: opts })
-                    }
-                    disabled={state.phase === "processing"}
-                  />
-                </div>
+                <details className="group/config rounded-2xl bg-[#F8F8FA] ring-1 ring-black/5" open>
+                  <summary className="flex items-center justify-between p-5 cursor-pointer select-none marker:content-none">
+                    <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
+                      配置清单
+                    </span>
+                    <svg
+                      className="size-3.5 text-[#9B9B9B] transition-transform group-open/config:rotate-180"
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                    >
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </summary>
+                  <div className="space-y-5 px-5 pb-5">
+                    <BrandSelector
+                      value={state.brandId}
+                      onChange={(brand: BrandId) =>
+                        dispatch({ type: "SET_BRAND", payload: brand })
+                      }
+                      disabled={state.phase === "processing"}
+                    />
+                    <PixelSizeSelector
+                      value={state.pixelSize}
+                      onChange={(size) =>
+                        dispatch({ type: "SET_PIXEL_SIZE", payload: size })
+                      }
+                      disabled={state.phase === "processing"}
+                    />
+                    <SmartOptimizeToggle
+                      enabled={state.smartOptimize}
+                      onToggle={() => dispatch({ type: "TOGGLE_SMART_OPTIMIZE" })}
+                      disabled={state.phase === "processing"}
+                    />
+                    <BlueprintControls
+                      options={state.gridOptions}
+                      onChange={(opts) =>
+                        dispatch({ type: "SET_GRID_OPTIONS", payload: opts })
+                      }
+                      disabled={state.phase === "processing"}
+                    />
+                  </div>
+                </details>
               )}
 
               {state.error && (

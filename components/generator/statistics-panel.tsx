@@ -30,12 +30,18 @@ export function StatisticsPanel({ statistics, brandId }: StatisticsPanelProps) {
       </div>
 
       {/* Shopping list with brand codes */}
-      <div>
-        <div className="flex items-center justify-between mb-2">
+      <details className="group/checklist" open>
+        <summary className="flex items-center justify-between mb-2 cursor-pointer select-none marker:content-none">
           <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
             配色清单
           </span>
-        </div>
+          <svg
+            className="size-3.5 text-[#9B9B9B] transition-transform group-open/checklist:rotate-180"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </summary>
 
         <div className="rounded-xl bg-[#F8F8FA] ring-1 ring-black/5 overflow-hidden">
           <div className="grid grid-cols-[40px_28px_1fr_auto] gap-2 px-3 py-2 bg-[#F0F0F4] text-[10px] font-medium text-[#9B9B9B] uppercase tracking-wide">
@@ -53,20 +59,16 @@ export function StatisticsPanel({ statistics, brandId }: StatisticsPanelProps) {
                   key={entry.bead.id}
                   className="grid grid-cols-[40px_28px_1fr_auto] gap-2 px-3 py-2 items-center hover:bg-white/60 transition-colors"
                 >
-                  {/* Brand code */}
                   <span className="text-xs font-bold text-[#5E6AD2] tabular-nums">
                     {code}
                   </span>
-                  {/* Color swatch */}
                   <span
                     className="size-4 rounded shrink-0 ring-1 ring-black/10"
                     style={{ backgroundColor: entry.bead.hex }}
                   />
-                  {/* Name */}
                   <span className="text-sm text-[#1A1A1A] truncate">
                     {entry.bead.nameZh}
                   </span>
-                  {/* Count */}
                   <span className="text-xs font-medium text-[#6B6B6B] tabular-nums text-right">
                     {formatNumber(entry.count)} 颗
                   </span>
@@ -75,7 +77,7 @@ export function StatisticsPanel({ statistics, brandId }: StatisticsPanelProps) {
             })}
           </div>
         </div>
-      </div>
+      </details>
     </div>
   );
 }
