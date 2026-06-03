@@ -16,11 +16,19 @@ export function ColorLegend({ statistics }: ColorLegendProps) {
   if (!statistics || usedColors.length === 0) return null;
 
   return (
-    <div className="space-y-2">
-      <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
-        全部颜色（{usedColors.length} 种）
-      </span>
-      <div className="flex flex-wrap gap-1.5">
+    <details className="space-y-2 group/legend" open>
+      <summary className="flex items-center gap-1.5 cursor-pointer select-none marker:content-none">
+        <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
+          全部颜色（{usedColors.length} 种）
+        </span>
+        <svg
+          className="size-3 text-[#9B9B9B] transition-transform group-open/legend:rotate-180"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </summary>
+      <div className="flex flex-wrap gap-1.5 mt-2">
         {usedColors.map((entry) => (
           <div
             key={entry.bead.id}
@@ -40,6 +48,6 @@ export function ColorLegend({ statistics }: ColorLegendProps) {
           </div>
         ))}
       </div>
-    </div>
+    </details>
   );
 }

@@ -177,6 +177,17 @@ export function ExportButton({
           </div>
         </div>
       </details>
+
+      {/* 手机保存提示 */}
+      <div className="flex items-start gap-2 px-3 py-2.5 rounded-lg bg-[#FFF8E6] ring-1 ring-amber-200/60">
+        <svg className="size-3.5 text-amber-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4M12 8h.01" />
+        </svg>
+        <p className="text-[11px] text-amber-700 leading-relaxed">
+          下载后用<strong>浏览器打开</strong>图纸文件即可直接保存到手机相册。SVG 矢量图支持双指缩放查看细节，推荐使用手机自带浏览器打开。
+        </p>
+      </div>
     </div>
   );
 }
