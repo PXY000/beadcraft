@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { ZoomIn, ZoomOut, RotateCcw, Eye, ImageIcon, ArrowLeftRight, ArrowUpDown } from "lucide-react";
 import type { BlueprintGrid, GridOptions, BrandId } from "@/lib/types";
@@ -38,10 +38,30 @@ export function BlueprintCanvas({
 
   const scale = ZOOM_STEPS[zoomIdx];
 
+  // Flip grid data so coordinates stay correct
+  const displayGrid = useMemo(() => {
+    if (!grid) return null;
+    if (!flipH && !flipV) return grid;
+
+    const rows = grid.pixels.length;
+    const cols = rows > 0 ? grid.pixels[0].length : 0;
+    const flipped = grid.pixels.map((row) => [...row]);
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const srcR = flipV ? rows - 1 - r : r;
+        const srcC = flipH ? cols - 1 - c : c;
+        flipped[r][c] = { ...grid.pixels[srcR][srcC], row: r, col: c };
+      }
+    }
+
+    return { ...grid, pixels: flipped };
+  }, [grid, flipH, flipV]);
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     const wrapper = wrapperRef.current;
-    if (!canvas || !wrapper || !grid) return;
+    if (!canvas || !wrapper || !displayGrid) return;
 
     const dpr = window.devicePixelRatio || 1;
     const wrapperWidth = wrapper.clientWidth;
@@ -60,14 +80,14 @@ export function BlueprintCanvas({
 
     renderBeadGrid({
       ctx,
-      grid,
+      grid: displayGrid,
       options: gridOptions,
       canvasWidth: size,
       canvasHeight: size,
       brandId,
       scale,
     });
-  }, [grid, gridOptions, brandId, scale]);
+  }, [displayGrid, gridOptions, brandId, scale]);
 
   useEffect(() => {
     draw();
@@ -249,7 +269,7 @@ export function BlueprintCanvas({
         <div
           ref={containerRef}
           style={{
-            transform: `translate(${pan.x}px, ${pan.y}px) scaleX(${flipH ? -1 : 1}) scaleY(${flipV ? -1 : 1})`,
+            transform: `translate(${pan.x}px, ${pan.y}px)`,
             transition: isPanning.current ? "none" : "transform 0.15s ease-out",
           }}
         >
