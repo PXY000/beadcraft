@@ -18,13 +18,14 @@ export async function exportBlueprintPNG(
   brandId: BrandId = "mard"
 ): Promise<void> {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const { pixelSize } = grid;
+  const { width: cols, height: rows } = grid;
 
   // Margins for 4-direction coordinate labels
   const labelMargin = 40;
-  const gridPixels = pixelSize * opts.beadPixelSize;
-  const canvasWidth = gridPixels + labelMargin * 2;
-  const gridCanvasHeight = gridPixels + labelMargin * 2;
+  const gridW = cols * opts.beadPixelSize;
+  const gridH = rows * opts.beadPixelSize;
+  const canvasWidth = gridW + labelMargin * 2;
+  const gridCanvasHeight = gridH + labelMargin * 2;
 
   const legendHeight = opts.includeLegend ? 240 : 0;
   const statsHeight = opts.includeStats ? 140 : 0;
@@ -76,7 +77,7 @@ export async function exportBlueprintPNG(
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `beadcraft-${brandId}-${grid.pixelSize}x${grid.pixelSize}.png`;
+  link.download = `beadcraft-${brandId}-${grid.width}x${grid.height}.png`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -91,13 +92,13 @@ export async function exportBlueprintPNGMobile(
   brandId: BrandId = "mard"
 ): Promise<void> {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const { pixelSize } = grid;
+  const { width: cols, height: rows } = grid;
 
   // Mobile-optimized: narrower width, larger beads for readability
   const mobileWidth = 800;
   const labelMargin = 40;
-  const gridPixels = pixelSize * opts.beadPixelSize;
-  const gridCanvasHeight = gridPixels + labelMargin * 2;
+  const gridH = rows * opts.beadPixelSize;
+  const gridCanvasHeight = gridH + labelMargin * 2;
 
   // Compact legend + stats for mobile
   const legendRows = Math.ceil(statistics.beadCounts.filter((s) => s.count > 0).length / 3);
@@ -122,7 +123,7 @@ export async function exportBlueprintPNGMobile(
   ctx.font = "bold 16px system-ui, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(`BeadCraft · ${pixelSize}×${pixelSize} · ${brandId.toUpperCase()}`, canvas.width / 2, headerHeight / 2);
+  ctx.fillText(`BeadCraft · ${grid.width}×${grid.height} · ${brandId.toUpperCase()}`, canvas.width / 2, headerHeight / 2);
 
   ctx.strokeStyle = "#E5E5E5";
   ctx.lineWidth = 1;
@@ -174,7 +175,7 @@ export async function exportBlueprintPNGMobile(
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `beadcraft-mobile-${brandId}-${grid.pixelSize}x${grid.pixelSize}.png`;
+  link.download = `beadcraft-mobile-${brandId}-${grid.width}x${grid.height}.png`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
