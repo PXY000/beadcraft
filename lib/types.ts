@@ -102,8 +102,10 @@ export interface GeneratorState {
   phase: GeneratorPhase;
   sourceImage: HTMLImageElement | null;
   sourceImageData: ImageData | null;
-  pixelSize: number;
+  pixelWidth: number;
+  pixelHeight: number;
   smartOptimize: boolean;
+  dither: boolean;
   brandId: BrandId;
   blueprint: BlueprintGrid | null;
   statistics: BlueprintStatistics | null;
@@ -115,8 +117,9 @@ export interface GeneratorState {
 // ─── Actions ───────────────────────────────────────────────
 export type GeneratorAction =
   | { type: "SET_IMAGE"; payload: { image: HTMLImageElement; imageData: ImageData } }
-  | { type: "SET_PIXEL_SIZE"; payload: number }
+  | { type: "SET_PIXEL_DIMENSIONS"; payload: { width: number; height: number } }
   | { type: "TOGGLE_SMART_OPTIMIZE" }
+  | { type: "TOGGLE_DITHER" }
   | { type: "SET_BRAND"; payload: BrandId }
   | { type: "SET_PROCESSING" }
   | { type: "SET_BLUEPRINT"; payload: { blueprint: BlueprintGrid; statistics: BlueprintStatistics } }

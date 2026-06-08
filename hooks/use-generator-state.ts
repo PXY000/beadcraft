@@ -2,7 +2,7 @@
 
 import { useReducer, useCallback, useRef, useEffect } from "react";
 import type { GeneratorState, GeneratorAction } from "@/lib/types";
-import { DEFAULT_PIXEL_SIZE, DEFAULT_BRAND, DEFAULT_GRID_OPTIONS, DEFAULT_EXPORT_OPTIONS, PROCESSING_DEBOUNCE_MS } from "@/lib/constants";
+import { DEFAULT_PIXEL_WIDTH, DEFAULT_PIXEL_HEIGHT, DEFAULT_BRAND, DEFAULT_GRID_OPTIONS, DEFAULT_EXPORT_OPTIONS, PROCESSING_DEBOUNCE_MS } from "@/lib/constants";
 import { runPipeline } from "@/lib/canvas-pipeline";
 import { clearMatchCache } from "@/lib/color-matcher";
 
@@ -10,8 +10,10 @@ const initialState: GeneratorState = {
   phase: "idle",
   sourceImage: null,
   sourceImageData: null,
-  pixelSize: DEFAULT_PIXEL_SIZE,
-  smartOptimize: true,
+  pixelWidth: DEFAULT_PIXEL_WIDTH,
+  pixelHeight: DEFAULT_PIXEL_HEIGHT,
+  smartOptimize: false,
+  dither: true,
   brandId: DEFAULT_BRAND,
   blueprint: null,
   statistics: null,
@@ -20,22 +22,49 @@ const initialState: GeneratorState = {
   error: null,
 };
 
+/** Auto-compute pixel dimensions preserving image aspect ratio */
+function autoDimensions(imageData: ImageData): { width: number; height: number } {
+  const { width: w, height: h } = imageData;
+  if (w === h) return { width: 32, height: 32 };
+
+  const maxBeads = 64; // max beads on the longer side
+  if (w > h) {
+    const cols = Math.min(Math.round(maxBeads), 128);
+    const rows = Math.max(8, Math.round(cols * (h / w)));
+    return { width: cols, height: rows };
+  } else {
+    const rows = Math.min(Math.round(maxBeads), 128);
+    const cols = Math.max(8, Math.round(rows * (w / h)));
+    return { width: cols, height: rows };
+  }
+}
+
 function reducer(state: GeneratorState, action: GeneratorAction): GeneratorState {
   switch (action.type) {
-    case "SET_IMAGE":
+    case "SET_IMAGE": {
+      const dims = autoDimensions(action.payload.imageData);
       return {
         ...state,
         phase: "uploaded",
         sourceImage: action.payload.image,
         sourceImageData: action.payload.imageData,
+        pixelWidth: dims.width,
+        pixelHeight: dims.height,
         blueprint: null,
         statistics: null,
         error: null,
       };
-    case "SET_PIXEL_SIZE":
-      return { ...state, pixelSize: action.payload };
+    }
+    case "SET_PIXEL_DIMENSIONS":
+      return {
+        ...state,
+        pixelWidth: action.payload.width,
+        pixelHeight: action.payload.height,
+      };
     case "TOGGLE_SMART_OPTIMIZE":
       return { ...state, smartOptimize: !state.smartOptimize };
+    case "TOGGLE_DITHER":
+      return { ...state, dither: !state.dither };
     case "SET_BRAND":
       return { ...state, brandId: action.payload };
     case "SET_PROCESSING":
@@ -56,7 +85,7 @@ function reducer(state: GeneratorState, action: GeneratorAction): GeneratorState
       return { ...state, phase: "idle", error: action.payload };
     case "RESET":
       clearMatchCache();
-      return { ...initialState, brandId: state.brandId }; // keep brand selection
+      return { ...initialState, brandId: state.brandId };
     default:
       return state;
   }
@@ -68,8 +97,10 @@ export function useGeneratorState() {
   const stateRef = useRef(state);
   stateRef.current = state;
 
-  const prevPixelSize = useRef(state.pixelSize);
+  const prevPixelWidth = useRef(state.pixelWidth);
+  const prevPixelHeight = useRef(state.pixelHeight);
   const prevSmartOptimize = useRef(state.smartOptimize);
+  const prevDither = useRef(state.dither);
   const prevBrandId = useRef(state.brandId);
 
   const processImage = useCallback(async () => {
@@ -107,26 +138,33 @@ export function useGeneratorState() {
   useEffect(() => {
     if (state.phase !== "ready") return;
 
-    const sizeChanged = prevPixelSize.current !== state.pixelSize;
+    const sizeChanged =
+      prevPixelWidth.current !== state.pixelWidth ||
+      prevPixelHeight.current !== state.pixelHeight;
     const optChanged = prevSmartOptimize.current !== state.smartOptimize;
+    const ditherChanged = prevDither.current !== state.dither;
     const brandChanged = prevBrandId.current !== state.brandId;
 
-    if (sizeChanged || optChanged || brandChanged) {
-      prevPixelSize.current = state.pixelSize;
+    if (sizeChanged || optChanged || ditherChanged || brandChanged) {
+      prevPixelWidth.current = state.pixelWidth;
+      prevPixelHeight.current = state.pixelHeight;
       prevSmartOptimize.current = state.smartOptimize;
+      prevDither.current = state.dither;
       prevBrandId.current = state.brandId;
       triggerProcessing();
     }
-  }, [state.pixelSize, state.smartOptimize, state.brandId, state.phase, triggerProcessing]);
+  }, [state.pixelWidth, state.pixelHeight, state.smartOptimize, state.dither, state.brandId, state.phase, triggerProcessing]);
 
   // Reset tracking refs on new image
   useEffect(() => {
     if (state.phase === "uploaded") {
-      prevPixelSize.current = state.pixelSize;
+      prevPixelWidth.current = state.pixelWidth;
+      prevPixelHeight.current = state.pixelHeight;
       prevSmartOptimize.current = state.smartOptimize;
+      prevDither.current = state.dither;
       prevBrandId.current = state.brandId;
     }
-  }, [state.phase, state.pixelSize, state.smartOptimize, state.brandId]);
+  }, [state.phase, state.pixelWidth, state.pixelHeight, state.smartOptimize, state.dither, state.brandId]);
 
   // Cleanup
   useEffect(() => {

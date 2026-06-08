@@ -46,7 +46,7 @@ const item = {
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-20 sm:py-28 bg-[#F8F8FA]">
+    <section id="features" className="py-20 sm:py-28 bg-[#0A0A0F] border-t border-white/[0.10]">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -55,10 +55,10 @@ export function FeaturesSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1A1A1A]">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             拼豆创作，从未如此简单
           </h2>
-          <p className="mt-3 text-sm text-[#6B6B6B] max-w-md mx-auto">
+          <p className="mt-3 text-sm text-white/40 max-w-md mx-auto">
             从照片到图纸只需几秒，不需要任何设计基础
           </p>
         </motion.div>
@@ -74,15 +74,15 @@ export function FeaturesSection() {
             <motion.div
               key={title}
               variants={item}
-              className="group relative p-6 rounded-2xl bg-white ring-1 ring-black/5 hover:ring-black/10 hover:shadow-sm transition-all"
+              className="group relative p-6 rounded-2xl bg-white/[0.05] backdrop-blur-xl ring-1 ring-white/[0.12] hover:ring-white/[0.20] hover:bg-white/[0.08] transition-all"
             >
-              <div className="size-10 rounded-xl bg-[#5E6AD2]/8 flex items-center justify-center mb-4 group-hover:bg-[#5E6AD2]/12 transition-colors">
+              <div className="size-10 rounded-xl bg-[#5E6AD2]/12 flex items-center justify-center mb-4 group-hover:bg-[#5E6AD2]/20 transition-colors">
                 <Icon className="size-5 text-[#5E6AD2]" />
               </div>
-              <h3 className="text-sm font-semibold text-[#1A1A1A] mb-1">
+              <h3 className="text-sm font-semibold text-white/85 mb-1">
                 {title}
               </h3>
-              <p className="text-xs text-[#6B6B6B] leading-relaxed">
+              <p className="text-xs text-white/40 leading-relaxed">
                 {description}
               </p>
             </motion.div>

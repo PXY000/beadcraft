@@ -21,10 +21,10 @@ function getBeadCode(beadId: string, brandId: BrandId): string {
 
 export function renderBeadGrid(params: RenderGridParams): void {
   const { ctx, grid, options, canvasWidth, canvasHeight, brandId, scale = 1 } = params;
-  const { pixelSize, pixels } = grid;
+  const { width: cols, height: rows, pixels } = grid;
 
-  // Pure white background
-  ctx.fillStyle = "#FFFFFF";
+  // Soft off-white background — easier on eyes against dark theme
+  ctx.fillStyle = "#F0EFED";
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   // Margins for coordinate labels on all 4 sides
@@ -33,14 +33,14 @@ export function renderBeadGrid(params: RenderGridParams): void {
   const leftMargin = 36;
   const rightMargin = 36;
 
-  // Calculate cell size based on available space and zoom
+  // Calculate cell size based on available space, zoom, and actual grid dimensions
   const availW = canvasWidth - leftMargin - rightMargin;
   const availH = canvasHeight - topMargin - bottomMargin;
-  const baseCell = Math.floor(Math.min(availW, availH) / pixelSize);
+  const baseCell = Math.floor(Math.min(availW / cols, availH / rows));
   const cellSize = Math.max(1, Math.floor(baseCell * scale));
 
-  const gridW = cellSize * pixelSize;
-  const gridH = cellSize * pixelSize;
+  const gridW = cellSize * cols;
+  const gridH = cellSize * rows;
 
   // Center the zoomed grid within the available area
   const gridX = leftMargin + Math.floor((availW - gridW) / 2);
@@ -52,7 +52,7 @@ export function renderBeadGrid(params: RenderGridParams): void {
     ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    for (let col = 0; col < pixelSize; col++) {
+    for (let col = 0; col < cols; col++) {
       const cx = gridX + col * cellSize + cellSize / 2;
       const cy = topMargin / 2;
       ctx.fillText(columnLabel(col), cx, cy);
@@ -65,7 +65,7 @@ export function renderBeadGrid(params: RenderGridParams): void {
     ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    for (let col = 0; col < pixelSize; col++) {
+    for (let col = 0; col < cols; col++) {
       const cx = gridX + col * cellSize + cellSize / 2;
       const cy = canvasHeight - bottomMargin / 2;
       ctx.fillText(columnLabel(col), cx, cy);
@@ -78,7 +78,7 @@ export function renderBeadGrid(params: RenderGridParams): void {
     ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    for (let row = 0; row < pixelSize; row++) {
+    for (let row = 0; row < rows; row++) {
       const cx = leftMargin / 2;
       const cy = gridY + row * cellSize + cellSize / 2;
       ctx.fillText(`${row + 1}`, cx, cy);
@@ -91,7 +91,7 @@ export function renderBeadGrid(params: RenderGridParams): void {
     ctx.font = `bold ${Math.min(10, cellSize * 0.48)}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    for (let row = 0; row < pixelSize; row++) {
+    for (let row = 0; row < rows; row++) {
       const cx = canvasWidth - rightMargin / 2;
       const cy = gridY + row * cellSize + cellSize / 2;
       ctx.fillText(`${row + 1}`, cx, cy);
@@ -100,8 +100,8 @@ export function renderBeadGrid(params: RenderGridParams): void {
 
   // ─── Draw square beads ───
   // Zero gap — beads fill entire cell
-  for (let row = 0; row < pixelSize; row++) {
-    for (let col = 0; col < pixelSize; col++) {
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
       const x = gridX + col * cellSize;
       const y = gridY + row * cellSize;
       const beadId = pixels[row][col].matchedBeadId;
@@ -140,12 +140,12 @@ export function renderBeadGrid(params: RenderGridParams): void {
     ctx.strokeStyle = options.gridLineColor;
     ctx.lineWidth = options.gridLineWidth;
     ctx.beginPath();
-    for (let col = 0; col <= pixelSize; col++) {
+    for (let col = 0; col <= cols; col++) {
       const x = gridX + col * cellSize;
       ctx.moveTo(x, gridY);
       ctx.lineTo(x, gridY + gridH);
     }
-    for (let row = 0; row <= pixelSize; row++) {
+    for (let row = 0; row <= rows; row++) {
       const y = gridY + row * cellSize;
       ctx.moveTo(gridX, y);
       ctx.lineTo(gridX + gridW, y);

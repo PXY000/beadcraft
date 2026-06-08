@@ -17,7 +17,7 @@ export function BlueprintControls({
 }: BlueprintControlsProps) {
   return (
     <div className="space-y-3">
-      <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
+      <span className="text-xs font-medium text-white/40 uppercase tracking-wide">
         显示选项
       </span>
 
@@ -58,16 +58,16 @@ function ToggleOption({
     <button
       disabled={disabled}
       onClick={onChange}
-      className="flex items-center justify-between w-full py-2 px-3 rounded-lg hover:bg-[#F0F0F4] transition-colors"
+      className="flex items-center justify-between w-full py-2 px-3 rounded-lg hover:bg-white/[0.04] transition-colors"
     >
       <div className="flex items-center gap-2">
-        <span className="text-[#6B6B6B]">{icon}</span>
-        <span className="text-sm text-[#1A1A1A]">{label}</span>
+        <span className="text-white/40">{icon}</span>
+        <span className="text-sm text-white/70">{label}</span>
       </div>
       <div
         className={cn(
           "relative inline-flex h-4 w-7 shrink-0 items-center rounded-full transition-colors",
-          checked ? "bg-[#5E6AD2]" : "bg-[#D4D4D4]"
+          checked ? "bg-[#5E6AD2]" : "bg-white/[0.15]"
         )}
       >
         <span

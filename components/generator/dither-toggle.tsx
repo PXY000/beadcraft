@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Blend } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -8,23 +8,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface SmartOptimizeToggleProps {
+interface DitherToggleProps {
   enabled: boolean;
   onToggle: () => void;
   disabled?: boolean;
 }
 
-export function SmartOptimizeToggle({
-  enabled,
-  onToggle,
-  disabled,
-}: SmartOptimizeToggleProps) {
+export function DitherToggle({ enabled, onToggle, disabled }: DitherToggleProps) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <Sparkles className="size-3.5 text-white/40" />
+        <Blend className="size-3.5 text-white/40" />
         <span className="text-xs font-medium text-white/40 uppercase tracking-wide">
-          智能优化
+          颜色抖动
         </span>
         <Tooltip>
           <TooltipTrigger>
@@ -33,7 +29,7 @@ export function SmartOptimizeToggle({
             </span>
           </TooltipTrigger>
           <TooltipContent side="top" className="max-w-[220px] text-xs">
-            照片去噪+边缘增强。注意：可能改变暗部细节，深色区域建议关闭。
+            Floyd-Steinberg误差扩散，用相邻像素补偿颜色，大幅减少色带和细节丢失。建议保持开启。
           </TooltipContent>
         </Tooltip>
       </div>

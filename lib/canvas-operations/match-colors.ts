@@ -8,23 +8,23 @@ import { BEAD_LIBRARY } from "../bead-library";
  */
 export function matchColors(
   imageData: ImageData,
-  pixelSize: number
+  pixelWidth: number,
+  pixelHeight: number
 ): BlueprintGrid {
   const beadIds = matchAllPixels(imageData.data, BEAD_LIBRARY);
-  const beadMap = new Map(BEAD_LIBRARY.map((b) => [b.id, b]));
 
   const pixels: BeadPixel[][] = [];
 
-  for (let row = 0; row < pixelSize; row++) {
+  for (let row = 0; row < pixelHeight; row++) {
     const rowPixels: BeadPixel[] = [];
-    for (let col = 0; col < pixelSize; col++) {
-      const idx = (row * pixelSize + col) * 4;
+    for (let col = 0; col < pixelWidth; col++) {
+      const idx = (row * pixelWidth + col) * 4;
       const sourceRGB: RGB = {
         r: imageData.data[idx],
         g: imageData.data[idx + 1],
         b: imageData.data[idx + 2],
       };
-      const beadId = beadIds[row * pixelSize + col];
+      const beadId = beadIds[row * pixelWidth + col];
 
       rowPixels.push({
         row,
@@ -37,9 +37,9 @@ export function matchColors(
   }
 
   return {
-    pixelSize,
-    width: pixelSize,
-    height: pixelSize,
+    pixelSize: Math.max(pixelWidth, pixelHeight),
+    width: pixelWidth,
+    height: pixelHeight,
     pixels,
   };
 }

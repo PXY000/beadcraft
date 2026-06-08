@@ -31,45 +31,48 @@ export function StatisticsPanel({ statistics, brandId }: StatisticsPanelProps) {
 
       {/* Shopping list with brand codes */}
       <details className="group/checklist" open>
-        <summary className="flex items-center justify-between mb-2 cursor-pointer select-none marker:content-none">
-          <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
+        <summary className="flex items-center justify-between mb-2 cursor-pointer select-none marker:content-none hover:bg-white/[0.04] rounded-lg px-2 py-1.5 -mx-2 transition-colors">
+          <span className="text-xs font-semibold text-white/55 uppercase tracking-wide">
             配色清单
           </span>
-          <svg
-            className="size-3.5 text-[#9B9B9B] transition-transform group-open/checklist:rotate-180"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-          >
-            <path d="M6 9l6 6 6-6" />
-          </svg>
+          <span className="inline-flex items-center gap-1 text-[10px] text-white/35 group-hover/checklist:text-white/50 transition-colors">
+            {usedColors.length} 色
+            <svg
+              className="size-3.5 transition-transform group-open/checklist:rotate-180"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </span>
         </summary>
 
-        <div className="rounded-xl bg-[#F8F8FA] ring-1 ring-black/5 overflow-hidden">
-          <div className="grid grid-cols-[40px_28px_1fr_auto] gap-2 px-3 py-2 bg-[#F0F0F4] text-[10px] font-medium text-[#9B9B9B] uppercase tracking-wide">
+        <div className="rounded-xl bg-white/[0.05] backdrop-blur-xl ring-1 ring-white/[0.12] overflow-hidden">
+          <div className="grid grid-cols-[40px_28px_1fr_auto] gap-2 px-3 py-2 bg-white/[0.08] text-[10px] font-medium text-white/45 uppercase tracking-wide">
             <span>色号</span>
             <span />
             <span>颜色</span>
             <span className="text-right">数量</span>
           </div>
 
-          <div className="divide-y divide-black/5">
+          <div className="divide-y divide-white/[0.04]">
             {usedColors.map((entry) => {
               const code = entry.bead.codes[brandId];
               return (
                 <div
                   key={entry.bead.id}
-                  className="grid grid-cols-[40px_28px_1fr_auto] gap-2 px-3 py-2 items-center hover:bg-white/60 transition-colors"
+                  className="grid grid-cols-[40px_28px_1fr_auto] gap-2 px-3 py-2 items-center hover:bg-white/[0.04] transition-colors"
                 >
-                  <span className="text-xs font-bold text-[#5E6AD2] tabular-nums">
+                  <span className="text-xs font-bold text-[#7B8AFF] tabular-nums">
                     {code}
                   </span>
                   <span
-                    className="size-4 rounded shrink-0 ring-1 ring-black/10"
+                    className="size-6 rounded shrink-0 ring-1 ring-white/10"
                     style={{ backgroundColor: entry.bead.hex }}
                   />
-                  <span className="text-sm text-[#1A1A1A] truncate">
+                  <span className="text-sm text-white/50 truncate">
                     {entry.bead.nameZh}
                   </span>
-                  <span className="text-xs font-medium text-[#6B6B6B] tabular-nums text-right">
+                  <span className="text-xs font-medium text-white/45 tabular-nums text-right">
                     {formatNumber(entry.count)} 颗
                   </span>
                 </div>
@@ -84,11 +87,11 @@ export function StatisticsPanel({ statistics, brandId }: StatisticsPanelProps) {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-[#F8F8FA] p-3 text-center ring-1 ring-black/5">
-      <p className="text-lg font-semibold text-[#1A1A1A] tabular-nums tracking-tight">
+    <div className="rounded-xl bg-white/[0.06] backdrop-blur-xl p-3 text-center ring-1 ring-white/[0.12]">
+      <p className="text-lg font-semibold text-white tabular-nums tracking-tight">
         {value}
       </p>
-      <p className="text-[10px] font-medium text-[#9B9B9B] uppercase tracking-wide mt-0.5">
+      <p className="text-[10px] font-medium text-white/45 uppercase tracking-wide mt-0.5">
         {label}
       </p>
     </div>

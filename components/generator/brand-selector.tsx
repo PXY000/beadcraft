@@ -3,7 +3,8 @@
 import { cn } from "@/lib/utils";
 import type { BrandId } from "@/lib/types";
 import { BRANDS } from "@/lib/types";
-import { Tag } from "lucide-react";
+import { BEAD_LIBRARY } from "@/lib/bead-library";
+import { useMemo } from "react";
 
 interface BrandSelectorProps {
   value: BrandId;
@@ -11,34 +12,55 @@ interface BrandSelectorProps {
   disabled?: boolean;
 }
 
+// Pick 6 representative colors per brand for the swatch preview
+function getBrandPreviewColors(brandId: BrandId): string[] {
+  const brandBeads = BEAD_LIBRARY.filter((b) => b.codes[brandId]);
+  // Take evenly spaced samples to show color range
+  const step = Math.max(1, Math.floor(brandBeads.length / 6));
+  return Array.from({ length: 6 }, (_, i) => {
+    const idx = Math.min(i * step, brandBeads.length - 1);
+    return brandBeads[idx]?.hex ?? "#999";
+  });
+}
+
 export function BrandSelector({ value, onChange, disabled }: BrandSelectorProps) {
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Tag className="size-3.5 text-[#6B6B6B]" />
-        <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
-          厂家色号
-        </span>
-      </div>
+      <span className="text-xs font-medium text-white/40 uppercase tracking-wide">
+        厂家色号
+      </span>
       <div className="grid grid-cols-2 gap-1.5">
-        {BRANDS.map((brand) => (
-          <button
-            key={brand.id}
-            disabled={disabled}
-            onClick={() => onChange(brand.id)}
-            className={cn(
-              "py-2 px-3 text-xs font-medium rounded-lg transition-all text-left",
-              value === brand.id
-                ? "bg-white text-[#1A1A1A] shadow-sm ring-1 ring-black/5"
-                : "text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-white/60"
-            )}
-          >
-            <div className="font-semibold">{brand.name}</div>
-            <div className="text-[10px] text-[#9B9B9B] mt-0.5 leading-tight">
-              {brand.description}
-            </div>
-          </button>
-        ))}
+        {BRANDS.map((brand) => {
+          const previewColors = useMemo(() => getBrandPreviewColors(brand.id), [brand.id]);
+          return (
+            <button
+              key={brand.id}
+              disabled={disabled}
+              onClick={() => onChange(brand.id)}
+              className={cn(
+                "relative overflow-hidden py-2.5 px-3 text-xs rounded-xl transition-all text-left group",
+                value === brand.id
+                  ? "bg-white/[0.08] backdrop-blur-xl shadow-sm ring-1 ring-white/[0.15]"
+                  : "text-white/40 hover:text-white/70 hover:bg-white/[0.08] ring-1 ring-transparent"
+              )}
+            >
+              {/* Color swatch strip */}
+              <div className="flex gap-0.5 mb-2">
+                {previewColors.map((hex, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 h-1.5 rounded-sm"
+                    style={{ backgroundColor: hex }}
+                  />
+                ))}
+              </div>
+              <div className="font-semibold">{brand.name}</div>
+              <div className="text-[10px] text-white/40 mt-0.5 leading-tight">
+                {brand.description}
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

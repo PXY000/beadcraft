@@ -9,14 +9,14 @@ export function Footer() {
   const [showEmail, setShowEmail] = useState(false);
 
   return (
-    <footer className="border-t border-black/5 bg-[#F8F8FA]">
+    <footer className="border-t border-white/[0.06] bg-[#06060B]">
       <Container>
         <div className="py-10 sm:py-12">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             {/* Brand */}
             <div className="flex items-center gap-2.5">
               <BeadIcon className="size-6" />
-              <span className="font-semibold text-[15px] tracking-tight text-[#1A1A1A]">
+              <span className="font-semibold text-[15px] tracking-tight text-white">
                 BeadCraft
               </span>
             </div>
@@ -33,13 +33,13 @@ export function Footer() {
                 href="https://github.com/PXY000/beadcraft"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
+                className="text-sm text-white/40 hover:text-white/80 transition-colors"
               >
                 GitHub
               </a>
               <button
                 onClick={() => setShowEmail(true)}
-                className="flex items-center gap-1.5 text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
+                className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white/80 transition-colors"
               >
                 <Mail className="size-4" />
                 联系我
@@ -47,8 +47,8 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-8 pt-5 border-t border-black/5">
-            <p className="text-xs text-[#9B9B9B]">
+          <div className="mt-8 pt-5 border-t border-white/[0.06]">
+            <p className="text-xs text-white/40">
               &copy; {new Date().getFullYear()} BeadCraft &mdash; 免费开源的拼豆图纸生成工具 · MIT License
             </p>
           </div>
@@ -57,18 +57,18 @@ export function Footer() {
 
       {/* Email popup */}
       {showEmail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-lg ring-1 ring-black/5 p-6 mx-4 max-w-sm w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-[#14141A] rounded-2xl shadow-lg ring-1 ring-white/[0.08] p-6 mx-4 max-w-sm w-full">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-[#1A1A1A]">联系方式</h3>
+              <h3 className="text-sm font-semibold text-white">联系方式</h3>
               <button
                 onClick={() => setShowEmail(false)}
-                className="size-7 rounded-lg flex items-center justify-center text-[#9B9B9B] hover:bg-[#F0F0F4] hover:text-[#1A1A1A] transition-colors"
+                className="size-7 rounded-lg flex items-center justify-center text-white/45 hover:bg-white/[0.06] hover:text-white/70 transition-colors"
               >
                 <X className="size-4" />
               </button>
             </div>
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-[#F8F8FA]">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04]">
               <Mail className="size-5 text-[#5E6AD2]" />
               <a
                 href="mailto:2939177020@qq.com"
@@ -77,7 +77,7 @@ export function Footer() {
                 2939177020@qq.com
               </a>
             </div>
-            <p className="text-xs text-[#9B9B9B] mt-3">
+            <p className="text-xs text-white/45 mt-3">
               品牌色号指正、功能建议、问题反馈，欢迎来信。
             </p>
           </div>

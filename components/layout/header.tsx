@@ -28,18 +28,6 @@ export function Header() {
             >
               在线生成
             </a>
-            <a
-              href="#showcase"
-              className="text-sm text-white/50 hover:text-white/80 transition-colors"
-            >
-              示例展示
-            </a>
-            <a
-              href="#about"
-              className="text-sm text-white/50 hover:text-white/80 transition-colors"
-            >
-              关于
-            </a>
           </nav>
           <div className="flex items-center gap-3">
             <a

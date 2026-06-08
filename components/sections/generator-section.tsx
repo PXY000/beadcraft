@@ -6,6 +6,7 @@ import { ImageUploader } from "@/components/generator/image-uploader";
 import { PixelSizeSelector } from "@/components/generator/pixel-size-selector";
 import { BrandSelector } from "@/components/generator/brand-selector";
 import { SmartOptimizeToggle } from "@/components/generator/smart-optimize-toggle";
+import { DitherToggle } from "@/components/generator/dither-toggle";
 import { BlueprintCanvas } from "@/components/generator/blueprint-canvas";
 import { BlueprintControls } from "@/components/generator/blueprint-controls";
 import { StatisticsPanel } from "@/components/generator/statistics-panel";
@@ -45,14 +46,25 @@ export function GeneratorSection() {
     dispatch({ type: "RESET" });
   }, [resetUpload, dispatch]);
 
+  const handleDemoClick = useCallback(async () => {
+    try {
+      const res = await fetch("/samples/猫咪.png");
+      const blob = await res.blob();
+      const file = new File([blob], "demo-cat.png", { type: "image/png" });
+      await handleFileSelect(file);
+    } catch {
+      // silently fail — demo image may not be available
+    }
+  }, [handleFileSelect]);
+
   return (
-    <section id="generator" className="py-20 sm:py-28">
+    <section id="generator" className="py-20 sm:py-28 bg-[#06060B] border-t border-white/[0.12]">
       <Container>
         <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1A1A1A]">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             在线生成图纸
           </h2>
-          <p className="mt-2 text-sm text-[#6B6B6B]">
+          <p className="mt-2 text-sm text-white/40">
             上传图片，选择厂家色号，自定义网格参数，实时预览拼豆效果
           </p>
         </div>
@@ -67,16 +79,17 @@ export function GeneratorSection() {
                 phase={state.phase}
                 onFileSelect={handleFileSelect}
                 onReset={handleReset}
+                onDemoClick={state.phase === "idle" ? handleDemoClick : undefined}
               />
 
               {state.phase !== "idle" && (
-                <details className="group/config rounded-2xl bg-[#F8F8FA] ring-1 ring-black/5" open>
+                <details className="group/config rounded-2xl bg-white/[0.05] backdrop-blur-xl ring-1 ring-white/[0.12]" open>
                   <summary className="flex items-center justify-between p-5 cursor-pointer select-none marker:content-none">
-                    <span className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide">
+                    <span className="text-xs font-medium text-white/40 uppercase tracking-wide">
                       配置清单
                     </span>
                     <svg
-                      className="size-3.5 text-[#9B9B9B] transition-transform group-open/config:rotate-180"
+                      className="size-3.5 text-white/40 transition-transform group-open/config:rotate-180"
                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                     >
                       <path d="M6 9l6 6 6-6" />
@@ -91,15 +104,21 @@ export function GeneratorSection() {
                       disabled={state.phase === "processing"}
                     />
                     <PixelSizeSelector
-                      value={state.pixelSize}
-                      onChange={(size) =>
-                        dispatch({ type: "SET_PIXEL_SIZE", payload: size })
+                      width={state.pixelWidth}
+                      height={state.pixelHeight}
+                      onChange={(w, h) =>
+                        dispatch({ type: "SET_PIXEL_DIMENSIONS", payload: { width: w, height: h } })
                       }
                       disabled={state.phase === "processing"}
                     />
                     <SmartOptimizeToggle
                       enabled={state.smartOptimize}
                       onToggle={() => dispatch({ type: "TOGGLE_SMART_OPTIMIZE" })}
+                      disabled={state.phase === "processing"}
+                    />
+                    <DitherToggle
+                      enabled={state.dither}
+                      onToggle={() => dispatch({ type: "TOGGLE_DITHER" })}
                       disabled={state.phase === "processing"}
                     />
                     <BlueprintControls
@@ -114,11 +133,11 @@ export function GeneratorSection() {
               )}
 
               {state.error && (
-                <div className="p-4 rounded-xl bg-red-50 ring-1 ring-red-100">
-                  <p className="text-sm text-red-600">{state.error}</p>
+                <div className="p-4 rounded-xl bg-red-500/10 ring-1 ring-red-500/20">
+                  <p className="text-sm text-red-400">{state.error}</p>
                   <button
                     onClick={handleReset}
-                    className="mt-2 text-xs font-medium text-red-700 hover:text-red-800"
+                    className="mt-2 text-xs font-medium text-red-300 hover:text-red-200"
                   >
                     重试 →
                   </button>
@@ -143,6 +162,7 @@ export function GeneratorSection() {
               gridOptions={state.gridOptions}
               phase={state.phase}
               brandId={state.brandId}
+              originalImageUrl={previewUrl}
             />
             {state.phase === "ready" && (
               <>

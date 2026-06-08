@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-20 sm:py-28 bg-[#F8F8FA]">
+    <section id="about" className="py-20 sm:py-28 bg-[#06060B]">
       <Container size="narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -26,19 +26,19 @@ export function AboutSection() {
             <Heart className="size-8 text-white" fill="currentColor" />
           </motion.div>
 
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1A1A1A] mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
             为女朋友而做的拼豆工具
           </h2>
 
-          <p className="text-[15px] text-[#555555] leading-relaxed max-w-lg mx-auto mb-3">
+          <p className="text-[15px] text-white/50 leading-relaxed max-w-lg mx-auto mb-3">
             女朋友喜欢拼豆，每次找图纸都要在各种 App
             和小程序之间来回切换，要么色号对不上，要么导出不够清晰。
           </p>
-          <p className="text-[15px] text-[#555555] leading-relaxed max-w-lg mx-auto mb-3">
+          <p className="text-[15px] text-white/50 leading-relaxed max-w-lg mx-auto mb-3">
             于是干脆自己写了一个 — 上传照片，自动匹配 5 个品牌 221
             种真实色号，生成带坐标和编号的正规图纸。
           </p>
-          <p className="text-[15px] text-[#555555] leading-relaxed max-w-lg mx-auto">
+          <p className="text-[15px] text-white/50 leading-relaxed max-w-lg mx-auto">
             希望能让她的拼豆创作更轻松一点 ❤️
           </p>
         </motion.div>
@@ -49,9 +49,9 @@ export function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="mt-12 pt-8 border-t border-black/[0.06]"
+          className="mt-12 pt-8 border-t border-white/[0.06]"
         >
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-[#8B8B8B]">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-white/45">
             <span>
               完全免费 · 开源（MIT）· 数据不上传服务器
             </span>

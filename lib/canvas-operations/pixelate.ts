@@ -4,17 +4,17 @@
  */
 export function pixelate(
   sourceImage: HTMLImageElement,
-  targetSize: number
+  targetWidth: number,
+  targetHeight: number
 ): ImageData {
-  // Step 1: Downscale to target size
   const small = document.createElement("canvas");
-  small.width = targetSize;
-  small.height = targetSize;
+  small.width = targetWidth;
+  small.height = targetHeight;
   const smallCtx = small.getContext("2d")!;
   smallCtx.imageSmoothingEnabled = false;
-  smallCtx.drawImage(sourceImage, 0, 0, targetSize, targetSize);
+  smallCtx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
 
-  return smallCtx.getImageData(0, 0, targetSize, targetSize);
+  return smallCtx.getImageData(0, 0, targetWidth, targetHeight);
 }
 
 /**
@@ -23,19 +23,20 @@ export function pixelate(
  */
 export function pixelateToCanvas(
   sourceImage: HTMLImageElement,
-  targetSize: number,
+  targetWidth: number,
+  targetHeight: number,
   outputCanvas: HTMLCanvasElement,
   blockSize: number
 ): void {
-  outputCanvas.width = targetSize * blockSize;
-  outputCanvas.height = targetSize * blockSize;
+  outputCanvas.width = targetWidth * blockSize;
+  outputCanvas.height = targetHeight * blockSize;
   const ctx = outputCanvas.getContext("2d")!;
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(sourceImage, 0, 0, targetSize, targetSize);
+  ctx.drawImage(sourceImage, 0, 0, targetWidth, targetHeight);
   // Scale up
   ctx.drawImage(
     outputCanvas,
-    0, 0, targetSize, targetSize,
-    0, 0, targetSize * blockSize, targetSize * blockSize
+    0, 0, targetWidth, targetHeight,
+    0, 0, targetWidth * blockSize, targetHeight * blockSize
   );
 }

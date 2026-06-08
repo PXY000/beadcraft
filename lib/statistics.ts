@@ -16,8 +16,8 @@ export function computeStatistics(grid: BlueprintGrid): BlueprintStatistics {
     return {
       bead,
       count,
-      percentage: grid.pixelSize * grid.pixelSize > 0
-        ? (count / (grid.pixelSize * grid.pixelSize)) * 100
+      percentage: grid.width * grid.height > 0
+        ? (count / (grid.width * grid.height)) * 100
         : 0,
     };
   });
@@ -26,7 +26,7 @@ export function computeStatistics(grid: BlueprintGrid): BlueprintStatistics {
   beadCounts.sort((a, b) => b.count - a.count);
 
   return {
-    totalBeads: grid.pixelSize * grid.pixelSize,
+    totalBeads: grid.width * grid.height,
     beadCounts,
     dimensions: { cols: grid.width, rows: grid.height },
   };

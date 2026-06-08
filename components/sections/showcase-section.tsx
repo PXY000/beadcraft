@@ -59,13 +59,13 @@ function FallbackCanvas() {
 
 export function ShowcaseSection() {
   return (
-    <section id="showcase" className="py-20 sm:py-28 bg-[#F8F8FA]">
+    <section id="showcase" className="py-20 sm:py-28 bg-[#0A0A0F]">
       <Container>
         <div className="text-center mb-14">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1A1A1A]">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             看看能做出什么
           </h2>
-          <p className="mt-2 text-sm text-[#6B6B6B]">
+          <p className="mt-2 text-sm text-white/40">
             上传任意照片或设计稿，自动生成对应风格的拼豆图纸
           </p>
         </div>
@@ -74,10 +74,10 @@ export function ShowcaseSection() {
           {samples.map((sample) => (
             <div
               key={sample.id}
-              className="group rounded-2xl bg-white ring-1 ring-black/5 overflow-hidden hover:shadow-sm hover:ring-black/10 transition-all"
+              className="group rounded-2xl bg-white/[0.03] ring-1 ring-white/[0.06] overflow-hidden hover:ring-white/[0.12] hover:bg-white/[0.05] transition-all"
             >
               {/* Preview: real image or Canvas fallback */}
-              <div className="aspect-square bg-[#FAFAF8] flex items-center justify-center p-4">
+              <div className="aspect-square bg-white/[0.02] flex items-center justify-center p-4">
                 {sample.image ? (
                   <Image
                     src={sample.image}
@@ -92,11 +92,11 @@ export function ShowcaseSection() {
                 )}
               </div>
 
-              <div className="p-4 border-t border-black/5">
-                <h3 className="text-sm font-semibold text-[#1A1A1A]">{sample.title}</h3>
-                <p className="text-xs text-[#6B6B6B] mt-1 leading-relaxed">{sample.description}</p>
+              <div className="p-4 border-t border-white/[0.06]">
+                <h3 className="text-sm font-semibold text-white/80">{sample.title}</h3>
+                <p className="text-xs text-white/40 mt-1 leading-relaxed">{sample.description}</p>
                 <div className="flex items-center gap-2 mt-3">
-                  <span className="text-[10px] font-medium text-[#9B9B9B] bg-[#F0F0F4] px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-medium text-white/30 bg-white/[0.06] px-2 py-0.5 rounded-full">
                     {sample.pixelSize}×{sample.pixelSize}
                   </span>
                   <span className="text-[10px] font-medium text-[#9B9B9B] bg-[#F0F0F4] px-2 py-0.5 rounded-full">
@@ -108,10 +108,7 @@ export function ShowcaseSection() {
           ))}
         </div>
 
-        <p className="text-center text-xs text-[#9B9B9B] mt-6">
-          将示例图片放入 public/samples/ 目录即可替换
-        </p>
-      </Container>
+              </Container>
     </section>
   );
 }
