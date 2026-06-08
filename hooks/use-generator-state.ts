@@ -25,15 +25,18 @@ const initialState: GeneratorState = {
 /** Auto-compute pixel dimensions preserving image aspect ratio */
 function autoDimensions(imageData: ImageData): { width: number; height: number } {
   const { width: w, height: h } = imageData;
-  if (w === h) return { width: 32, height: 32 };
+  // Scale target size based on image resolution: smaller images get smaller grids
+  const maxDim = Math.max(w, h);
+  const target = maxDim > 1000 ? 64 : maxDim > 500 ? 48 : 32;
 
-  const maxBeads = 64; // max beads on the longer side
+  if (w === h) return { width: target, height: target };
+
   if (w > h) {
-    const cols = Math.min(Math.round(maxBeads), 128);
+    const cols = Math.min(target, 128);
     const rows = Math.max(8, Math.round(cols * (h / w)));
     return { width: cols, height: rows };
   } else {
-    const rows = Math.min(Math.round(maxBeads), 128);
+    const rows = Math.min(target, 128);
     const cols = Math.max(8, Math.round(rows * (w / h)));
     return { width: cols, height: rows };
   }

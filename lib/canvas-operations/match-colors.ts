@@ -1,5 +1,5 @@
-import type { BeadColor, BeadPixel, RGB, BlueprintGrid } from "../types";
-import { matchAllPixels, findNearestBead } from "../color-matcher";
+import type { BeadPixel, RGB, BlueprintGrid } from "../types";
+import { matchAllPixels } from "../color-matcher";
 import { BEAD_LIBRARY } from "../bead-library";
 
 /**

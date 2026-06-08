@@ -47,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className={`${inter.variable} antialiased`}>
-      <body className="min-h-screen bg-[#06060B] text-[#1A1A1A] font-sans grain-bg">
+      <body className="min-h-screen bg-[#06060B] text-white font-sans grain-bg">
         <TooltipProvider delay={200}>{children}</TooltipProvider>
       </body>
     </html>

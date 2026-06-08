@@ -1,44 +1,4 @@
-/** Minimal inline SVG icons to avoid heavy icon dependencies for small shapes */
-
-export function Circle() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
-export function Square() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <rect
-        x="2"
-        y="2"
-        width="10"
-        height="10"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        rx="1"
-      />
-    </svg>
-  );
-}
-
-export function RoundedCorners() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <rect
-        x="2"
-        y="2"
-        width="10"
-        height="10"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        rx="3"
-      />
-    </svg>
-  );
-}
+/** Minimal inline SVG icons */
 
 export function Grid3X3() {
   return (

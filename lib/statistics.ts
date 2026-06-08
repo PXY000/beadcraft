@@ -1,5 +1,5 @@
 import type { BlueprintGrid, BlueprintStatistics, BeadStats } from "./types";
-import { BEAD_LIBRARY, BEAD_MAP } from "./bead-library";
+import { BEAD_LIBRARY } from "./bead-library";
 
 export function computeStatistics(grid: BlueprintGrid): BlueprintStatistics {
   const counts = new Map<string, number>();

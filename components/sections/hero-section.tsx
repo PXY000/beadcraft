@@ -124,12 +124,6 @@ export function HeroSection() {
               开始创作
               <ArrowDown className="size-4" />
             </a>
-            <a
-              href="#showcase"
-              className="inline-flex items-center gap-2 h-12 px-7 rounded-xl text-sm font-medium text-white/50 hover:text-white/80 transition-all hover:bg-white/[0.04]"
-            >
-              查看示例
-            </a>
           </motion.div>
 
           {/* Feature pills */}
