@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import { motion } from "framer-motion";
-import { ZoomIn, ZoomOut, RotateCcw, Eye, ImageIcon } from "lucide-react";
+import { ZoomIn, ZoomOut, RotateCcw, Eye, ImageIcon, ArrowLeftRight, ArrowUpDown } from "lucide-react";
 import type { BlueprintGrid, GridOptions, BrandId } from "@/lib/types";
 import { renderBeadGrid } from "@/lib/canvas-operations/render-grid";
 import { cn } from "@/lib/utils";
@@ -31,6 +31,8 @@ export function BlueprintCanvas({
   const [zoomIdx, setZoomIdx] = useState(2); // default 1x = index 2
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [showOriginal, setShowOriginal] = useState(false);
+  const [flipH, setFlipH] = useState(false);
+  const [flipV, setFlipV] = useState(false);
   const isPanning = useRef(false);
   const lastMouse = useRef({ x: 0, y: 0 });
 
@@ -183,8 +185,31 @@ export function BlueprintCanvas({
           <ZoomIn className="size-4" />
         </button>
 
+        {/* Flip buttons */}
+        <div className="h-7 mx-2 w-px bg-white/[0.08]" />
+        <button
+          onClick={() => setFlipH(!flipH)}
+          className={cn(
+            "size-7 rounded-lg flex items-center justify-center transition-colors",
+            flipH ? "bg-white/[0.10] text-white/70" : "text-white/40 hover:bg-white/[0.06] hover:text-white/70"
+          )}
+          title="水平翻转"
+        >
+          <ArrowLeftRight className="size-3.5" />
+        </button>
+        <button
+          onClick={() => setFlipV(!flipV)}
+          className={cn(
+            "size-7 rounded-lg flex items-center justify-center transition-colors",
+            flipV ? "bg-white/[0.10] text-white/70" : "text-white/40 hover:bg-white/[0.06] hover:text-white/70"
+          )}
+          title="垂直翻转"
+        >
+          <ArrowUpDown className="size-3.5" />
+        </button>
+
         {originalImageUrl && (
-          <div className="h-7 mx-2 w-px bg-white/[0.08]" />
+          <div className="h-7 mx-1 w-px bg-white/[0.08]" />
         )}
         {originalImageUrl && (
           <button
@@ -224,7 +249,7 @@ export function BlueprintCanvas({
         <div
           ref={containerRef}
           style={{
-            transform: `translate(${pan.x}px, ${pan.y}px)`,
+            transform: `translate(${pan.x}px, ${pan.y}px) scaleX(${flipH ? -1 : 1}) scaleY(${flipV ? -1 : 1})`,
             transition: isPanning.current ? "none" : "transform 0.15s ease-out",
           }}
         >
